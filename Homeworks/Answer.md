@@ -13,64 +13,70 @@ $ ls -l /usr/bin/passwd
 
 ### Homework 2
 ```
-# Apply for shared directory
-# Default owner for new file and directory is creator.
-chgrp framgia /path/to/shared_directory # Change group to framgia
-chmod g+s /path/to/shared_directory # New created file and directory has group is framgia (from command above)
-umask u=rwx,g=rwx,o= # New file will create with permission 660 and directory is 770
-
+sudo groupadd framgia
+sudo chgrp framgia ~/shared_directory/
+sudo chmod g+s ~/shared_directory/
+umask 007 ; mkdir a_new_directory ; umask 117
 ```
-
 ### Homework 3
-```
-" Display line numbers
+#### Display line numbers
+`
 set number
+`
+#### Add support for Elixir language  
+- Plugin managers
 
-" Set file encodings
-set fileencodings=utf-8,shift-js,sjis
+The most common plugin managers include [vim-plug][vim-plug],
+[NeoBundle][neobundle], [Vundle][vundle] and [pathogen.vim][pathogen].
 
-" Disable arrow keys
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
+With pathogen.vim, just clone this repository inside `~/.vim/bundle`:
 
-" Replace tab with 4 spaces
+`bash
+git clone https://github.com/elixir-lang/vim-elixir.git ~/.vim/bundle/vim-elixir
+`
+
+With the other plugin managers, just follow the instructions on the homepage of
+each plugin. In general, you have to add a line to your `~/.vimrc`:
+
+```viml
+" vim-plug
+Plug 'elixir-lang/vim-elixir'
+" NeoBundle
+NeoBundle 'elixir-lang/vim-elixir'
+" Vundle
+Plugin 'elixir-lang/vim-elixir'
+```
+
+- Manual installation
+
+Copy the contents of each directory in the respective directories inside
+`~/.vim`.
+#### set default list of file encoding: `utf-8`, `shift-js`, `sjis`, other encoding.
+`set fileencodings=utf-8,shift-js,sjis`
+#### Disable arrow keys
+```
+noremap <Up> <Nop> 
+noremap <Down> <Nop> 
+noremap <Left> <Nop> 
+noremap <Right> <Nop> 
+```
+
+#### Replace tab with 4 spaces
+```
 set tabstop=4
 set shiftwidth=4
 set expandtab
 ```
 
-Add support for Elixir language  
-Step 1: Clone vim-elixir repo:
-```
-git clone https://github.com/elixir-lang/vim-elixir.git
-```
-Step 2: Install  
-- Step 2.1: With pathogen plugin manager, copy `vim-elixir` folder to ~/.vim/bundle  
-- Step 2.2: Manual install, copy contents of each directory in the respective directories inside ~/.vim
-
 ### Homework 4
-Create public-private key file name dev_rsa
 ```
-ssh-keygen -N '' -f dev_rsa -t rsa
-```
-- -N '': no passphrase
-- -f dev_rsa: create two file output: dev_rsa for private, dev_rsa.pub for public
-- -t rsa: key type is rsa
-
-Write ssh config file
-File ~/.ssh/config
-```
+ssh-keygen -t rsa -C "" dev_rsa
 Host dev
     HostName 128.45.53.123
     Port 2222
-    # Replace with location of private key file
-    IdentityFile ~/.ssh/dev_rsa
-    # Replace with real username on server
-    User username
+    User user_name
+       IdentityFile ~/.ssh/dev_rsa.key
 ```
-
 ### Homework 5
 File create_acc.sh
 
@@ -104,4 +110,5 @@ sudo chmod 600 /home/$1/.ssh/authorized_keys
 sudo chmod 700 /home/$1/.ssh
 sudo chown -R $1 /home/$1/.ssh
 exit 0
+
 ```
